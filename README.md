@@ -1,1 +1,36 @@
-<h1>RAHGIR</h1> <p> <strong>Road-scene Analysis for Hazards with Grounded Interactive Risk (RAHGIR)</strong> </p> <p> RAHGIR is a domain-specialized vision-language reasoning system designed to analyze road scenes from the ego-vehicle perspective and estimate interaction risks, occlusion hazards, and pedestrian conflict likelihood in a probabilistic manner. </p> <h2>Key Capabilities</h2> <ul> <li>Grounded hazard reasoning from visual road scenes with explicit visual evidence</li> <li>Interactive risk modeling between traffic agents under partial observability</li> <li>Probabilistic risk prediction from the ego-vehicle perspective</li> </ul> <h2>Reasoning Modes</h2> <ul> <li><strong>Observed-agent risk</strong>: Risk estimation conditioned on agents visible in the scene</li> <li><strong>Hypothetical-agent risk</strong>: Risk estimation under potential agent emergence from occluded regions</li> </ul> <p> RAHGIR aims to bridge scene understanding and risk-aware decision making for autonomous driving and traffic safety research. </p>
+<h1>RAHGIR</h1>
+
+<p><strong>Road-scene Analysis for Hazards with Grounded Interactive Risk Reasoning</strong></p>
+
+<p>
+RAHGIR is a policy-conditioned, domain-specialized vision–language reasoning system
+designed to analyze forward-facing ego-vehicle road scenes and produce structured,
+probabilistic assessments of traffic risk under partial observability.
+</p>
+
+<h2>What RAHGIR Does</h2>
+<ul>
+  <li>Converts a single road image into explicit risk assessments</li>
+  <li>Reasons from the ego-vehicle perspective using traffic-domain constraints</li>
+  <li>Produces calibrated Low / Medium / High risk estimates with justifications</li>
+</ul>
+
+<h2>Key Capabilities</h2>
+<ul>
+  <li>Policy-conditioned hazard reasoning grounded in visual evidence</li>
+  <li>Explicit modeling of interaction risk between traffic agents</li>
+  <li>Occlusion-aware risk inference under incomplete observability</li>
+  <li>Structured, evaluation-friendly outputs (not free-form captions)</li>
+</ul>
+
+<h2>Reasoning Modes</h2>
+<ul>
+  <li><strong>Observed-agent risk</strong>: Risk estimation conditioned on visible road users</li>
+  <li><strong>Hypothetical-agent risk</strong>: Risk estimation under potential agent emergence from occluded regions</li>
+</ul>
+
+<p>
+RAHGIR is implemented on AWS with explicit reasoning policies,
+guardrails, calibration layers, and an evaluation harness.
+  <!-- that mirrors a fine-tuned vision-language model pipeline—without model retraining. -->
+</p>
