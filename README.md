@@ -1,4 +1,4 @@
-<h1>RAHGIRR</h1>
+<h1>RAHGIR</h1>
 
 <p><strong>Road-scene Analysis for Hazards with Grounded Interactive Risk Reasoning</strong></p>
 
