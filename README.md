@@ -105,7 +105,7 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 <h4>Example 1: Active Work Zone</h4>
 
 <p align="center">
-  <img src="sample-images/thumbnail/Route-32-work-zone-2048x1536.jpg" alt="Route-32 work zone" width="600">
+  <img src="sample-images/thumbnail/Route-32-work-zone-2048x1536.jpg" alt="Route-32 work zone" width="300">
 </p>
 
 <p>
@@ -116,12 +116,6 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 ```json
 {
   "status": "success",
-  "intent": "INTERACTION, WORKZONE",
-  "analysis": {
-    "id": "msg_bdrk_01BEZnb4gvTDbSTvnvQjEwjP",
-    "type": "message",
-    "role": "assistant",
-    "model": "claude-3-haiku-20240307",
     "content": [
       {
         "type": "text",
@@ -143,7 +137,7 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 <h4>Example 2: Non-Road Scene (Basketball Court)</h4>
 
 <p align="center">
-  <img src="sample-images/thumbnail/basketball.jpg" alt="Basketball court" width="600">
+  <img src="sample-images/thumbnail/basketball.jpg" alt="Basketball court" width="300">
 </p>
 
 <p>
@@ -154,12 +148,6 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 ```json
 {
   "status": "success",
-  "intent": "INTERACTION, WORKZONE",
-  "analysis": {
-    "id": "msg_bdrk_0161jojbenZv4NTYEei1SBib",
-    "type": "message",
-    "role": "assistant",
-    "model": "claude-3-haiku-20240307",
     "content": [
       {
         "type": "text",
