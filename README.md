@@ -70,6 +70,33 @@ RAHGIR employs a cost-efficient two-stage architecture to handle user queries:
 This approach prevents costly VLM calls for off-topic queries while maintaining fast response times for legitimate safety questions.
 </p>
 
+<h4>Design Evolution</h4>
+
+<p>
+Initially, RAHGIR was tested with a single-stage approach where users submitted fully structured queries directly to the VLM. However, this proved inefficient and inflexible:
+</p>
+
+<ul>
+  <li>Users had to manually structure their queries according to specific formats</li>
+  <li>Every query, regardless of relevance, incurred expensive VLM processing costs</li>
+  <li>Off-topic queries still consumed resources before being rejected</li>
+</ul>
+
+<p>
+The current two-stage architecture addresses these limitations by:
+</p>
+
+<ul>
+  <li><strong>Accepting natural language queries</strong>: Users can ask questions in plain English without formatting requirements</li>
+  <li><strong>Extracting key topics</strong>: Stage 1 identifies the intent and key topics (e.g., INTERACTION, WORKZONE, PEDESTRIAN, OCCLUSION) from the user's query</li>
+  <li><strong>Structuring queries internally</strong>: The system automatically reformats and structures the query with appropriate context before passing it to the VLM</li>
+  <li><strong>Filtering irrelevant queries</strong>: Non-relevant queries are rejected at Stage 1, saving VLM costs entirely</li>
+</ul>
+
+<p>
+This evolution significantly improved both user experience and operational efficiency, allowing natural interaction while maintaining cost control.
+</p>
+
 <h3>Query Filtering Examples</h3>
 
 <p>
