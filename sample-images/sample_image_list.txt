@@ -9,3 +9,14 @@ camera.jpg
 hq720.jpg
 basketball.jpg
 Camera.jpg
+
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/1.ROAD-Lowell.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/1.ROAD-Lowell.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/2.ROAD-Lowell.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/2.ROAD-Lowell.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/55.653_Roadway.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/55.653_Roadway.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/Canva-Smart-Work-Zone.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/Canva-Smart-Work-Zone.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/Route-32-work-zone-2048x1536.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/Route-32-work-zone-2048x1536.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/hq720.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/hq720.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/tracks-greenfield.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/tracks-greenfield.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/basketball.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/basketball.jpg
+https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/camera.jpg, https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/camera.jpg
+

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RAHGIR – Risk Analysis Test UI</title>
+  <title>RAHGIR – Road Scene Risk Analysis</title>
 
   <style>
     body {
@@ -18,7 +18,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       background: #020617;
       padding: 24px;
@@ -33,8 +33,9 @@
       font-weight: 600;
     }
 
-    textarea, input {
+    textarea {
       width: 100%;
+      min-height: 80px;
       background: #020617;
       border: 1px solid #1e293b;
       color: #e5e7eb;
@@ -43,13 +44,9 @@
       font-size: 14px;
     }
 
-    textarea {
-      min-height: 70px;
-    }
-
     button {
       padding: 8px 14px;
-      background: #2563eb;
+      background: #334155;
       color: white;
       border: none;
       border-radius: 8px;
@@ -58,129 +55,453 @@
       margin: 4px 4px 0 0;
     }
 
-    button.secondary {
-      background: #334155;
+    button:hover {
+      background: #475569;
     }
 
-    button:hover {
-      opacity: 0.9;
+    button.primary {
+      background: #2563eb;
+    }
+
+    button.primary:hover {
+      background: #1d4ed8;
+    }
+
+    button:disabled {
+      background: #1e293b;
+      cursor: not-allowed;
+      opacity: 0.5;
     }
 
     .group {
-      margin-top: 14px;
+      margin-top: 18px;
+    }
+
+    /* Thumbnails */
+    .thumbnail-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .thumbnail {
+      height: 90px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: 3px solid transparent;
+      object-fit: cover;
+    }
+
+    .thumbnail.selected {
+      border: 3px solid #22c55e;
+      box-shadow: 0 0 0 2px rgba(34,197,94,0.4);
     }
 
     pre {
-      margin-top: 20px;
+      margin-top: 10px;
       background: #020617;
       border: 1px solid #1e293b;
-      padding: 14px;
+      padding: 12px;
       border-radius: 8px;
       font-size: 13px;
       white-space: pre-wrap;
+    }
+
+    .section-title {
+      font-weight: 700;
+      margin-top: 24px;
+      margin-bottom: 6px;
+      color: #93c5fd;
+    }
+
+    /* Upload area */
+    .upload-area {
+      border: 2px dashed #334155;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .upload-area:hover {
+      border-color: #475569;
+      background: #0a0f1e;
+    }
+
+    .upload-area.dragover {
+      border-color: #2563eb;
+      background: #0a0f1e;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .uploaded-preview {
+      max-width: 390px;
+      max-height: 260px;
+      margin: 10px auto;
+      border-radius: 6px;
+      display: none;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>RAHGIR – Road Scene Risk Analysis</h1>
+<div class="container">
+  <h1>RAHGIR – Road Scene Risk Analysis</h1>
 
-    <label>Question</label>
-    <textarea id="question"></textarea>
-
-    <label>Image URL</label>
-    <input id="imageUrl" />
-
-    <div class="group">
-      <strong>Test Queries</strong><br />
-      <button onclick="setQuery(
-        'Does the lane closure ahead increase interaction risk?',
-        's3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg'
-      )">Lane closure → interaction</button>
-
-      <button onclick="setQuery(
-        'Could pedestrians emerge from behind the construction barriers?',
-        's3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg'
-      )">Pedestrian occlusion</button>
-
-      <button onclick="setQuery(
-        'What are the traffic rules in construction zones?',
-        ''
-      )" class="secondary">Traffic rules (reject)</button>
-
-      <button onclick="setQuery(
-        'What brand of car is this?',
-        's3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg'
-      )" class="secondary">Car brand (reject)</button>
-
-      <button onclick="setQuery(
-        'Explain quantum entanglement like I am five',
-        ''
-      )" class="secondary">Quantum (reject)</button>
-
-      <button onclick="setQuery(
-        'Write a poem about city life',
-        ''
-      )" class="secondary">Poem (reject)</button>
-    </div>
-
-    <div class="group">
-      <strong>Test Images</strong><br />
-      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg')">Work zone</button>
-      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/thedashcamstore.com-how-dashcams-benefit-new-teen-drivers-blog-520.jpg')">Dashcam road</button>
-      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/55.653_Roadway copy.png')">Roadway</button>
-      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/hq720.jpg')">Urban traffic</button>
-    </div>
-
-    <div class="group">
-      <button onclick="analyze()">Analyze</button>
-    </div>
-
-    <pre id="output">Response will appear here…</pre>
+  <!-- SAMPLE IMAGES -->
+  <div class="group">
+    <div class="section-title">Select Sample Image</div>
+    <div id="thumbnails" class="thumbnail-container"></div>
   </div>
 
-  <script>
-    const API_URL =
-      "https://xtamfymjx4.execute-api.us-east-1.amazonaws.com/analyze";
+  <!-- UPLOAD IMAGE -->
+  <div class="group">
+    <div class="section-title">Or Upload Your Own Image</div>
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+      <div>📁 Click to browse or drag & drop an image here</div>
+      <div style="font-size: 12px; color: #64748b; margin-top: 8px;">Supports JPG, PNG, WEBP</div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" />
+    <img id="uploadedPreview" class="uploaded-preview" />
+  </div>
 
-    function setQuery(q, img) {
-      document.getElementById("question").value = q;
-      if (img) document.getElementById("imageUrl").value = img;
+  <!-- QUESTION -->
+  <label>Question</label>
+  <textarea id="question"></textarea>
+
+  <!-- SAMPLE QUESTIONS -->
+  <div class="group">
+    <strong>Sample Questions</strong><br/>
+    <button onclick="setQuestion('Does the lane closure ahead increase interaction risk?')">
+      Lane closure → interaction risk
+    </button>
+    <button onclick="setQuestion('Could pedestrians emerge from behind the construction barriers?')">
+      Pedestrian emergence risk
+    </button>
+    <button onclick="setQuestion('What are the traffic rules in construction zones?')">
+      Traffic rules
+    </button>
+    <button onclick="setQuestion('What brand of car is this?')">
+      Car brand 
+    </button>
+    <button onclick="setQuestion('Explain quantum entanglement like I am five')">
+      Quantum physics
+    </button>
+    <button onclick="setQuestion('Write a poem about city life')">
+      Poem
+    </button>
+  </div>
+
+  <!-- ANALYZE -->
+  <div class="group">
+    <button class="primary" id="analyzeBtn" onclick="analyze()">Analyze</button>
+    <button class="primary" id="fullAnalysisBtn" onclick="analyzeFullImage()">Full Risk Assessment</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="group">
+    <div class="section-title">Stage 1 – Query Analysis</div>
+    <pre id="stage1">Ready when you are! Stage 1 query analysis output will appear here once you submit your input.</pre>
+
+    <div class="section-title">Stage 2 – Image Risk Analysis</div>
+    <pre id="stage2">Stage 2 VLM-based image risk analysis will run automatically after Stage 1 completes.</pre>
+  </div>
+</div>
+
+<script>
+  const API_URL = "https://xtamfymjx4.execute-api.us-east-1.amazonaws.com/analyze";
+
+  const images = [
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/1.ROAD-Lowell.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/1.ROAD-Lowell.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/2.ROAD-Lowell.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/2.ROAD-Lowell.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/55.653_Roadway.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/55.653_Roadway.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/Canva-Smart-Work-Zone.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/Canva-Smart-Work-Zone.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/Route-32-work-zone-2048x1536.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/Route-32-work-zone-2048x1536.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/hq720.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/hq720.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/tracks-greenfield.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/tracks-greenfield.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/basketball.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/basketball.jpg"
+    },
+    {
+      thumb: "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/thumbnail/camera.jpg",
+      full:  "https://raw.githubusercontent.com/z00bean/rahgir-vlm/refs/heads/main/sample-images/img/camera.jpg"
+    }
+  ];
+
+  let selectedImage = null;
+  let uploadedImageData = null;
+
+  function setQuestion(q) {
+    document.getElementById("question").value = q;
+  }
+
+  function setButtonsDisabled(disabled) {
+    document.getElementById("analyzeBtn").disabled = disabled;
+    document.getElementById("fullAnalysisBtn").disabled = disabled;
+  }
+
+  function renderThumbnails() {
+    const container = document.getElementById("thumbnails");
+    const uploadedPreview = document.getElementById("uploadedPreview");
+    
+    images.forEach(img => {
+      const el = document.createElement("img");
+      el.src = img.thumb;
+      el.className = "thumbnail";
+      el.onclick = () => {
+        document.querySelectorAll(".thumbnail").forEach(t => t.classList.remove("selected"));
+        el.classList.add("selected");
+        selectedImage = img.full;
+        uploadedImageData = null;
+        
+        // Show the selected sample image in the preview area
+        uploadedPreview.src = img.full;
+        uploadedPreview.style.display = "block";
+      };
+      container.appendChild(el);
+    });
+  }
+
+  // Handle file upload
+  const fileInput = document.getElementById("fileInput");
+  const uploadArea = document.getElementById("uploadArea");
+  const uploadedPreview = document.getElementById("uploadedPreview");
+
+  fileInput.addEventListener("change", handleFileSelect);
+
+  uploadArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadArea.classList.add("dragover");
+  });
+
+  uploadArea.addEventListener("dragleave", () => {
+    uploadArea.classList.remove("dragover");
+  });
+
+  uploadArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove("dragover");
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFile(files[0]);
+    }
+  });
+
+  function handleFileSelect(e) {
+    const file = e.target.files[0];
+    if (file) {
+      handleFile(file);
+    }
+  }
+
+  function handleFile(file) {
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file.");
+      return;
     }
 
-    function setImage(img) {
-      document.getElementById("imageUrl").value = img;
-    }
-
-    async function analyze() {
-      const question = document.getElementById("question").value.trim();
-      const imageUrl = document.getElementById("imageUrl").value.trim();
-      const output = document.getElementById("output");
-
-      output.textContent = "Sending request...";
-
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            question: question,
-            image_url: imageUrl
-          })
-        });
-
-        const text = await res.text();
-
-        try {
-          output.textContent = JSON.stringify(JSON.parse(text), null, 2);
-        } catch {
-          output.textContent = text;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Resize and compress image
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        
+        // Calculate new dimensions (max height 700px, maintain aspect ratio)
+        let width = img.width;
+        let height = img.height;
+        
+        if (height > 700) {
+          width = (width * 700) / height;
+          height = 700;
         }
-      } catch (err) {
-        output.textContent = "Fetch error:\n" + err;
-      }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Draw and compress to JPEG at 70% quality
+        ctx.drawImage(img, 0, 0, width, height);
+        uploadedImageData = canvas.toDataURL("image/jpeg", 0.7);
+        
+        // Show preview
+        uploadedPreview.src = uploadedImageData;
+        uploadedPreview.style.display = "block";
+        
+        // Deselect sample images
+        document.querySelectorAll(".thumbnail").forEach(t => t.classList.remove("selected"));
+        selectedImage = null;
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function analyze() {
+    const question = document.getElementById("question").value.trim();
+    const stage1 = document.getElementById("stage1");
+    const stage2 = document.getElementById("stage2");
+
+    if (!question) {
+      alert("Please enter a question.");
+      return;
     }
-  </script>
+
+    if (!selectedImage && !uploadedImageData) {
+      alert("Please select or upload an image.");
+      return;
+    }
+
+    setButtonsDisabled(true);
+    stage1.textContent = "Running query analysis…";
+    stage2.textContent = "Waiting…";
+
+    try {
+      const payload = {
+        question: question
+      };
+
+      if (uploadedImageData) {
+        // Convert base64 data URL to just the base64 string
+        const base64Data = uploadedImageData.split(',')[1];
+        payload.image_data = base64Data;
+      } else {
+        payload.image_url = selectedImage;
+      }
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      // Random delay between 1.1 and 2.2 seconds before showing stage 2
+      const delay = 1100 + Math.random() * 1100; // 1100ms to 2200ms
+
+      if (data.status === "rejected") {
+        stage1.textContent = data.analysis;
+        await new Promise(resolve => setTimeout(resolve, delay));
+        stage2.textContent = "Image analysis skipped.";
+      } else {
+        stage1.textContent = "RELEVANT – proceeding to image-based risk analysis.";
+        await new Promise(resolve => setTimeout(resolve, delay));
+        stage2.textContent = JSON.stringify(data, null, 2);
+      }
+
+    } catch (err) {
+      stage1.textContent = "Error";
+      stage2.textContent = err.toString();
+    } finally {
+      setButtonsDisabled(false);
+    }
+  }
+
+  async function analyzeFullImage() {
+    const stage1 = document.getElementById("stage1");
+    const stage2 = document.getElementById("stage2");
+
+    if (!selectedImage && !uploadedImageData) {
+      alert("Please select or upload an image.");
+      return;
+    }
+
+    setButtonsDisabled(true);
+    stage1.textContent = "Running full risk assessment…";
+    stage2.textContent = "Analyzing image…";
+
+    const fullAnalysisQuery = `You are an autonomous driving risk assessment system. Analyze a forward-facing ego-camera road scene image and assess risk considering both visible agents and plausible agent emergence from occluded regions.
+
+Assessment Categories:
+1. Interaction Risks (including potential interactions with emerging agents)
+2. Occlusion Hazards (areas that could conceal agents)
+3. Pedestrian Conflict Likelihood (including possible crossings from occluded zones)
+
+Instructions:
+Verify the image is an outdoor road scene. If not, output "Invalid image."
+For each category, provide a risk level (Low/Medium/High) and a 1–2 sentence justification.
+Reason using visible elements and realistic hypotheses about agents emerging from occlusions (e.g., behind vehicles, corners, vegetation).
+If a risk cannot be determined, state "Insufficient information."
+
+Output Format:
+Image Validity:
+Interaction Risks + Justification:
+Occlusion Hazards + Justification:
+Pedestrian Conflict Likelihood + Justification:`;
+
+    try {
+      const payload = {
+        question: fullAnalysisQuery
+      };
+
+      if (uploadedImageData) {
+        // Convert base64 data URL to just the base64 string
+        const base64Data = uploadedImageData.split(',')[1];
+        payload.image_data = base64Data;
+      } else {
+        payload.image_url = selectedImage;
+      }
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      // Random delay between 1.1 and 2.2 seconds before showing stage 2
+      //const delay = 1100 + Math.random() * 1100; // 1100ms to 2200ms
+      const delay = 1100 + Math.random() * 2000; // 1100ms to 3100ms
+
+      if (data.status === "rejected") {
+        stage1.textContent = data.analysis;
+        await new Promise(resolve => setTimeout(resolve, delay));
+        stage2.textContent = "Image analysis skipped.";
+      } else {
+        stage1.textContent = "RELEVANT – Full risk assessment completed.";
+        await new Promise(resolve => setTimeout(resolve, delay));
+        stage2.textContent = JSON.stringify(data, null, 2);
+      }
+
+    } catch (err) {
+      stage1.textContent = "Error";
+      stage2.textContent = err.toString();
+    } finally {
+      setButtonsDisabled(false);
+    }
+  }
+
+  renderThumbnails();
+</script>
 </body>
 </html>
