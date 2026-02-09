@@ -129,7 +129,6 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
       "output_tokens": 67
     }
   }
-}
 ```
 
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
@@ -161,7 +160,6 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
       "output_tokens": 49
     }
   }
-}
 ```
 
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
@@ -261,3 +259,63 @@ RAHGIR implements comprehensive AWS Bedrock Guardrails to ensure safe and approp
 <p>
 These guardrails protect against misuse while ensuring the system remains focused on legitimate road safety assessment tasks.
 </p>
+
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
+<h2>AWS Architecture</h2>
+
+<p>
+RAHGIR is deployed as a serverless application on AWS, leveraging multiple managed services for scalability, reliability, and cost-efficiency:
+</p>
+
+<h3>Core Services</h3>
+
+<ul>
+  <li><strong>Amazon Bedrock</strong>: Hosts the vision-language models (Claude 3 Haiku) for both query analysis and image-based risk assessment. Provides built-in guardrails for content filtering and safety.</li>
+  
+  <li><strong>AWS Lambda</strong>: Executes the two-stage analysis pipeline:
+    <ul>
+      <li>Stage 1: Text-only query relevance classification</li>
+      <li>Stage 2: VLM-based image risk assessment (conditional on Stage 1)</li>
+    </ul>
+    Serverless architecture ensures automatic scaling and pay-per-use pricing.
+  </li>
+  
+  <li><strong>Amazon API Gateway</strong>: Provides RESTful API endpoint (<code>https://xtamfymjx4.execute-api.us-east-1.amazonaws.com/analyze</code>) for client requests. Handles request validation, throttling, and CORS configuration.</li>
+  
+  <li><strong>Amazon S3</strong>: Hosts the static web interface (HTML/CSS/JavaScript) with public read access for the application frontend.</li>
+  
+  <li><strong>Amazon CloudFront</strong>: Content delivery network (CDN) that serves the S3-hosted web interface with:
+    <ul>
+      <li>Global edge locations for low-latency access</li>
+      <li>HTTPS encryption</li>
+      <li>Caching for improved performance</li>
+      <li>Custom domain support (optional)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Architecture Flow</h3>
+
+<ol>
+  <li>User accesses web interface via CloudFront URL</li>
+  <li>CloudFront serves static assets from S3 bucket</li>
+  <li>User submits query + image through web interface</li>
+  <li>Browser sends POST request to API Gateway endpoint</li>
+  <li>API Gateway triggers Lambda function</li>
+  <li>Lambda executes Stage 1 (text analysis) via Bedrock</li>
+  <li>If relevant, Lambda executes Stage 2 (VLM analysis) via Bedrock</li>
+  <li>Lambda returns structured JSON response</li>
+  <li>Web interface displays results to user</li>
+</ol>
+
+<h3>Benefits of This Architecture</h3>
+
+<ul>
+  <li><strong>Serverless</strong>: No infrastructure management, automatic scaling, pay-per-use pricing</li>
+  <li><strong>Cost-efficient</strong>: Two-stage filtering prevents expensive VLM calls for irrelevant queries</li>
+  <li><strong>Secure</strong>: Bedrock Guardrails, API Gateway throttling, CloudFront HTTPS</li>
+  <li><strong>Scalable</strong>: Handles traffic spikes automatically without manual intervention</li>
+  <li><strong>Global</strong>: CloudFront CDN provides low-latency access worldwide</li>
+  <li><strong>Maintainable</strong>: Single-file HTML application, Lambda function updates without downtime</li>
+</ul>
