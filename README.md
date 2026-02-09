@@ -9,7 +9,7 @@ probabilistic assessments of traffic risk under partial observability.
 </p>
 
 <p align="center">
-  <img src="img-files-docs/images/full-webpage-sample_result.jpg" alt="RAHGIR Web Interface" width="800">
+  <img src="img-files-docs/images/banner-rahgir.jpg" alt="RAHGIR Web Interface" width="800">
   <br>
   <em>RAHGIR web interface showing input image, text question, and VLM risk assessment result</em>
 </p>
