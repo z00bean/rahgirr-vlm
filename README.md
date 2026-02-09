@@ -279,7 +279,7 @@ RAHGIR is deployed as a serverless application on AWS, leveraging multiple manag
     Serverless architecture ensures automatic scaling and pay-per-use pricing.
   </li>
   
-  <li><strong>Amazon API Gateway</strong>: Provides RESTful API endpoint (<code>https://xtamfymjx4.execute-api.us-east-1.amazonaws.com/analyze</code>) for client requests. Handles request validation, throttling, and CORS configuration.</li>
+  <li><strong>Amazon API Gateway</strong>: Provides RESTful API endpoint for client requests. Handles request validation, throttling, and CORS configuration.</li>
   
   <li><strong>Amazon S3</strong>: Hosts the static web interface (HTML/CSS/JavaScript) with public read access for the application frontend.</li>
   
