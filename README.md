@@ -232,7 +232,7 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 <h3>Testing on AWS Bedrock</h3>
 
 <p>
-RAHGIR can also be tested directly through the AWS Bedrock console for development and validation purposes:
+In addition to testing via the AWS Bedrock console, the VLM was evaluated through programmatic and workflow-level testing to assess its behavior under realistic usage conditions. We also conducted human-in-the-loop validation, manually reviewing and validating the model’s outputs across 100 representative test cases to assess accuracy, relevance, and safety. We plan to construct a dedicated evaluation dataset and implement automated testing and scoring pipelines to enable repeatable benchmarking, regression testing, and continuous performance monitoring as the system evolves.
 </p>
 
 <p align="center">
