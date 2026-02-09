@@ -197,8 +197,6 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 ```
 
 <p align="center">
-  <img src="img-files-docs/images/sample-result.jpg" alt="Railroad tracks risk assessment" width="800">
-  <br>
   <em>VLM correctly identifies railroad interaction risk while noting absence of work zone activity</em>
 </p>
 
