@@ -202,7 +202,9 @@ cython_debug/
 .cursorindexingignore
 
 test-cases/
-
+test-cases/API_KEY.txt
+test-cases/*
+tests/*
 # Marimo
 marimo/_static/
 marimo/_lsp/
