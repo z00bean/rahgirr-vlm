@@ -53,6 +53,8 @@ The RAHGIR web interface provides an intuitive way to interact with the risk ass
   <em>Input options: select sample images or upload custom images with drag-and-drop support</em>
 </p>
 
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
 <h3>Two-Stage Query Processing</h3>
 
 <p>
@@ -90,13 +92,21 @@ The system intelligently filters non-relevant queries before invoking the VLM:
 This pre-filtering is crucial because some queries may superficially appear related to transportation or safety but are actually off-topic. Since VLM queries are expensive, this cheap text-based pre-check significantly reduces operational costs while maintaining system responsiveness.
 </p>
 
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
 <h3>Sample Risk Assessment Results</h3>
 
 <p>
 When relevant queries are submitted, RAHGIR provides detailed risk assessments. Here are examples demonstrating the system's contextual understanding:
 </p>
 
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
 <h4>Example 1: Active Work Zone</h4>
+
+<p align="center">
+  <img src="sample-images/thumbnail/Route-32-work-zone-2048x1536.jpg" alt="Route-32 work zone" width="600">
+</p>
 
 <p>
 <strong>Image:</strong> Route-32 work zone<br>
@@ -128,7 +138,13 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
 }
 ```
 
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
 <h4>Example 2: Non-Road Scene (Basketball Court)</h4>
+
+<p align="center">
+  <img src="sample-images/thumbnail/basketball.jpg" alt="Basketball court" width="600">
+</p>
 
 <p>
 <strong>Image:</strong> Basketball court<br>
@@ -159,6 +175,8 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
   }
 }
 ```
+
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 
 <h4>Example 3: Railroad Tracks</h4>
 
@@ -198,6 +216,28 @@ When relevant queries are submitted, RAHGIR provides detailed risk assessments. 
   <em>VLM correctly identifies railroad interaction risk while noting absence of work zone activity</em>
 </p>
 
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
+<h3>Testing on AWS Bedrock</h3>
+
+<p>
+RAHGIR can also be tested directly through the AWS Bedrock console for development and validation purposes:
+</p>
+
+<p align="center">
+  <img src="img-files-docs/images/1.1.bedrock-query.jpg" alt="Bedrock query interface" width="800">
+  <br>
+  <em>Submitting a query with image through AWS Bedrock console</em>
+</p>
+
+<p align="center">
+  <img src="img-files-docs/images/1.2.bedrock-model-interaction-answer.jpg" alt="Bedrock model response" width="800">
+  <br>
+  <em>VLM response showing structured risk assessment in Bedrock</em>
+</p>
+
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+
 <h3>Contextual Understanding</h3>
 
 <p>
@@ -214,6 +254,8 @@ These examples demonstrate RAHGIR's ability to:
 <p>
 The VLM's responses are found in the JSON structure at <code>["content"][0]["text"]</code>, providing structured risk assessments that can be easily parsed and integrated into downstream safety systems.
 </p>
+
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 
 <h2>AWS Guardrails</h2>
 
