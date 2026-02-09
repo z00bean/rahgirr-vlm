@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RAHGIR – Risk Analysis Test UI</title>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #020617;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 0 1px #1e293b;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    textarea, input {
+      width: 100%;
+      background: #020617;
+      border: 1px solid #1e293b;
+      color: #e5e7eb;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 70px;
+    }
+
+    button {
+      padding: 8px 14px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 4px 4px 0 0;
+    }
+
+    button.secondary {
+      background: #334155;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .group {
+      margin-top: 14px;
+    }
+
+    pre {
+      margin-top: 20px;
+      background: #020617;
+      border: 1px solid #1e293b;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>RAHGIR – Road Scene Risk Analysis</h1>
+
+    <label>Question</label>
+    <textarea id="question"></textarea>
+
+    <label>Image URL</label>
+    <input id="imageUrl" />
+
+    <div class="group">
+      <strong>Test Queries</strong><br />
+      <button onclick="setQuery(
+        'Does the lane closure ahead increase interaction risk?',
+        's3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg'
+      )">Lane closure → interaction</button>
+
+      <button onclick="setQuery(
+        'Could pedestrians emerge from behind the construction barriers?',
+        's3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg'
+      )">Pedestrian occlusion</button>
+
+      <button onclick="setQuery(
+        'What are the traffic rules in construction zones?',
+        ''
+      )" class="secondary">Traffic rules (reject)</button>
+
+      <button onclick="setQuery(
+        'What brand of car is this?',
+        's3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg'
+      )" class="secondary">Car brand (reject)</button>
+
+      <button onclick="setQuery(
+        'Explain quantum entanglement like I am five',
+        ''
+      )" class="secondary">Quantum (reject)</button>
+
+      <button onclick="setQuery(
+        'Write a poem about city life',
+        ''
+      )" class="secondary">Poem (reject)</button>
+    </div>
+
+    <div class="group">
+      <strong>Test Images</strong><br />
+      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/Canva-Smart-Work-Zone.jpg')">Work zone</button>
+      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/thedashcamstore.com-how-dashcams-benefit-new-teen-drivers-blog-520.jpg')">Dashcam road</button>
+      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/55.653_Roadway copy.png')">Roadway</button>
+      <button class="secondary" onclick="setImage('s3://s3-rahgir-host-website/hq720.jpg')">Urban traffic</button>
+    </div>
+
+    <div class="group">
+      <button onclick="analyze()">Analyze</button>
+    </div>
+
+    <pre id="output">Response will appear here…</pre>
+  </div>
+
+  <script>
+    const API_URL =
+      "https://xtamfymjx4.execute-api.us-east-1.amazonaws.com/analyze";
+
+    function setQuery(q, img) {
+      document.getElementById("question").value = q;
+      if (img) document.getElementById("imageUrl").value = img;
+    }
+
+    function setImage(img) {
+      document.getElementById("imageUrl").value = img;
+    }
+
+    async function analyze() {
+      const question = document.getElementById("question").value.trim();
+      const imageUrl = document.getElementById("imageUrl").value.trim();
+      const output = document.getElementById("output");
+
+      output.textContent = "Sending request...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            question: question,
+            image_url: imageUrl
+          })
+        });
+
+        const text = await res.text();
+
+        try {
+          output.textContent = JSON.stringify(JSON.parse(text), null, 2);
+        } catch {
+          output.textContent = text;
+        }
+      } catch (err) {
+        output.textContent = "Fetch error:\n" + err;
+      }
+    }
+  </script>
+</body>
+</html>

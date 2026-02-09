@@ -1,0 +1,10 @@
+**Image Validity:** Valid outdoor road scene — a bridge roadway with construction zone, traffic barrels, traffic signal, and approaching vehicles.
+
+**Interaction Risks: Medium**
+Several oncoming vehicles are visible in the left lanes approaching through the construction zone delineated by orange barrels. The lane shift indicated by the orange warning sign (reverse curve/lane shift) means the ego vehicle must merge or navigate a lateral displacement, increasing the risk of conflict with oncoming traffic if lane boundaries are unclear. The traffic light shows green, permitting forward movement, but the narrowed lanes and barrel channelization reduce margin for error. The combination of oncoming traffic and a construction-zone lane shift creates a moderate interaction risk.
+
+**Occlusion Hazards: Medium-High**
+The large concrete bridge tower structures on both sides of the roadway create significant blind spots — vehicles, cyclists, or pedestrians could emerge from behind them unexpectedly. The row of orange traffic barrels on the left partially obscures the full extent of oncoming traffic and any workers or equipment that might be in the construction zone. The raised concrete median/barrier on the right also limits visibility of the pedestrian walkway and any persons who might step over it. The bridge railing on the far right conceals the waterside area. Overall, multiple structural occlusions exist that could conceal emerging agents.
+
+**Pedestrian Conflict Likelihood: Low-Medium**
+No pedestrians are currently visible, and this is a bridge roadway — typically a lower-pedestrian environment. However, the elevated sidewalk/walkway on the right side of the bridge could have pedestrians obscured by the median barrier or bridge towers. Construction zones sometimes have workers on foot who may be hidden behind barrels or structures. The bridge tower alcoves could also conceal individuals. While the probability of a sudden pedestrian incursion is relatively low on a bridge, the occlusion factors and active construction zone elevate it slightly above baseline.
