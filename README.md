@@ -1,4 +1,4 @@
-<h1>RAHGIR</h1>
+<h1>RAHGIR VLM</h1>
 
 <p><strong>Road-scene Analysis for Hazards with Grounded Interactive Risk Reasoning</strong></p>
 
@@ -315,5 +315,4 @@ RAHGIR is deployed as a serverless application on AWS, leveraging multiple manag
   <li><strong>Secure</strong>: Bedrock Guardrails, API Gateway throttling, CloudFront HTTPS</li>
   <li><strong>Scalable</strong>: Handles traffic spikes automatically without manual intervention</li>
   <li><strong>Global</strong>: CloudFront CDN provides low-latency access worldwide</li>
-  <li><strong>Maintainable</strong>: Single-file HTML application, Lambda function updates without downtime</li>
 </ul>
